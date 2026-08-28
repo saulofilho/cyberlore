@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-main: #0A0B10;
+    --card-bg: #15171E;
+    --accent-green: #00FF41;
+    --accent-cyan: #00D1FF;
+    --border-color: #1e293b;
+  }
+
+  body {
+    background-color: #0A0B10;
+    color: #e2e8f0;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  }
+}
+
+/* Custom scrollbars for cyber theme */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A0B10;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Bento glow effects */
+.bento-glow-green {
+  box-shadow: 0 0 25px -5px rgba(0, 255, 65, 0.15);
+}
+
+.bento-glow-cyan {
+  box-shadow: 0 0 25px -5px rgba(0, 209, 255, 0.15);
+}
+
+.bento-border {
+  border: 1px solid #1e293b;
+}
+
+.bento-card {
+  background-color: #15171E;
+  border: 1px solid #1e293b;
+  border-radius: 1rem;
+}

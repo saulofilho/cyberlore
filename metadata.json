@@ -1,0 +1,6 @@
+{
+  "name": "CyberShield - Academia de Cibersegurança para Todos",
+  "description": "Plataforma interativa de educação em segurança cibernética com trilhas de conhecimento, simuladores de Pentest, laboratórios OWASP, terminal hacker ético, Modo Kids/Jovens e dicas práticas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

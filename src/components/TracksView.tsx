@@ -25,6 +25,7 @@ import { Track, Lesson, UserProgress } from '../types';
 import { triggerConfetti } from '../utils/storage';
 import { DailyChallengeCard } from './DailyChallengeCard';
 import { CyberShieldAITutor } from './CyberShieldAITutor';
+import { ProgressDashboardCard } from './ProgressDashboardCard';
 
 interface TracksViewProps {
   progress: UserProgress;
@@ -123,6 +124,17 @@ export const TracksView: React.FC<TracksViewProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Progress Telemetry Dashboard Card (Recharts) */}
+      <ProgressDashboardCard
+        progress={progress}
+        tracks={tracksData}
+        onSelectTrack={(track) => {
+          setSelectedTrackId(track.id);
+          const firstLesson = track.modules[0]?.lessons[0] || null;
+          setActiveLesson(firstLesson);
+        }}
+      />
 
       {/* Daily Challenge Bento Card */}
       <DailyChallengeCard

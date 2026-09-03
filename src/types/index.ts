@@ -24,6 +24,14 @@ export interface GlossaryTerm {
 
 export type UserLevel = 'Iniciante' | 'Explorador' | 'Analista Jr' | 'Pentester' | 'Especialista' | 'White Hat Elite';
 
+export interface XpHistoryEntry {
+  date: string; // e.g. '28/08', '01/09'
+  fullDate: string; // e.g. '2026-08-28'
+  xp: number; // accumulated XP
+  gain: number; // xp gained on this entry
+  activity?: string; // description of activity
+}
+
 export interface UserProgress {
   xp: number;
   completedLessons: string[]; // lesson ids
@@ -36,6 +44,7 @@ export interface UserProgress {
   lastCompletedDailyDate?: string;
   completedDailyDates?: string[];
   completedDailyChallengeIds?: string[];
+  xpHistory?: XpHistoryEntry[];
 }
 
 export type DailyChallengeCategory = 

@@ -48,10 +48,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
 
       - name: Install Dependencies
-        run: npm ci
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
 
       - name: Build Static Applet
         run: npm run build
@@ -74,8 +78,9 @@ node -v # deve retornar v22.x ou superior
 
 # 2. Inicialize o repositório git local (se ainda não o fez):
 git init
+# O package-lock.json já está gerado na raiz e deve ser adicionado:
 git add .
-git commit -m "feat: CyberShield Academy com Glossário e Node 22"
+git commit -m "feat: CyberShield Academy com Glossário, Bento Hover e Node 22"
 
 # 3. Vincule ao seu repositório no GitHub:
 git branch -M main

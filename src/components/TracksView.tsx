@@ -17,12 +17,14 @@ import {
   AlertTriangle,
   Lightbulb,
   Sparkles,
-  BookOpen
+  BookOpen,
+  Bot
 } from 'lucide-react';
 import { tracksData } from '../data/tracksData';
 import { Track, Lesson, UserProgress } from '../types';
 import { triggerConfetti } from '../utils/storage';
 import { DailyChallengeCard } from './DailyChallengeCard';
+import { CyberShieldAITutor } from './CyberShieldAITutor';
 
 interface TracksViewProps {
   progress: UserProgress;
@@ -221,7 +223,15 @@ export const TracksView: React.FC<TracksViewProps> = ({
                   <ArrowLeft className="w-4 h-4" />
                   <span>← VOLTAR AOS MÓDULOS</span>
                 </button>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <a
+                    href="#cybershield-ai-tutor"
+                    className="flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded-md bg-[#00FF41]/10 text-[#00FF41] border border-[#00FF41]/30 hover:bg-[#00FF41]/20 transition-all cursor-pointer"
+                    title="Pedir ajuda ao CyberShield AI (Gemini)"
+                  >
+                    <Bot className="w-3.5 h-3.5 text-[#00FF41]" />
+                    <span className="hidden sm:inline">CyberShield AI</span>
+                  </a>
                   <span className="flex items-center gap-1 text-xs font-mono text-slate-400">
                     <Clock className="w-3.5 h-3.5" />
                     {activeLesson.duration}
@@ -341,6 +351,12 @@ export const TracksView: React.FC<TracksViewProps> = ({
                   ))}
                 </ul>
               </div>
+
+              {/* CyberShield AI Tutor (Gemini 3.8 Flash) */}
+              <CyberShieldAITutor
+                lesson={activeLesson}
+                track={selectedTrack}
+              />
 
               {/* Interactive Quiz or Completion Button */}
               {activeLesson.quiz && activeLesson.quiz.length > 0 ? (

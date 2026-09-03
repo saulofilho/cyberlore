@@ -203,3 +203,12 @@ export interface EmergencyAction {
   detailedSteps: { step: number; title: string; desc: string }[];
   contactsToCall: string[];
 }
+
+export interface CyberShieldAIMessage {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: number;
+  model?: string;
+  isError?: boolean;
+}

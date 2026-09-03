@@ -16,7 +16,8 @@ import {
   HelpCircle,
   AlertTriangle,
   Lightbulb,
-  Sparkles
+  Sparkles,
+  BookOpen
 } from 'lucide-react';
 import { tracksData } from '../data/tracksData';
 import { Track, Lesson, UserProgress } from '../types';
@@ -26,6 +27,7 @@ interface TracksViewProps {
   progress: UserProgress;
   onCompleteLesson: (lessonId: string, xpEarned: number) => void;
   onOpenCertificate: (trackTitle: string) => void;
+  onOpenGlossaryTerm?: (termName: string) => void;
 }
 
 const iconMap: Record<string, React.ElementType> = {
@@ -40,7 +42,8 @@ const iconMap: Record<string, React.ElementType> = {
 export const TracksView: React.FC<TracksViewProps> = ({
   progress,
   onCompleteLesson,
-  onOpenCertificate
+  onOpenCertificate,
+  onOpenGlossaryTerm,
 }) => {
   const [selectedTrackId, setSelectedTrackId] = useState<string>(tracksData[0].id);
   const [activeLesson, setActiveLesson] = useState<Lesson | null>(null);
@@ -235,16 +238,39 @@ export const TracksView: React.FC<TracksViewProps> = ({
               {/* Key terms if any */}
               {activeLesson.keyTerms && activeLesson.keyTerms.length > 0 && (
                 <div className="bg-black/40 rounded-xl p-5 border border-slate-800 space-y-3">
-                  <h4 className="text-xs font-mono uppercase font-bold text-[#00FF41] tracking-widest flex items-center gap-2">
-                    <Lightbulb className="w-4 h-4 text-yellow-400" />
-                    GLOSSÁRIO & TERMOS TÉCNICOS
-                  </h4>
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-xs font-mono uppercase font-bold text-[#00FF41] tracking-widest flex items-center gap-2">
+                      <Lightbulb className="w-4 h-4 text-yellow-400" />
+                      GLOSSÁRIO & TERMOS TÉCNICOS
+                    </h4>
+                    {onOpenGlossaryTerm && (
+                      <button
+                        onClick={() => onOpenGlossaryTerm(activeLesson.keyTerms![0].term)}
+                        className="text-[11px] font-mono text-[#00FF41] hover:underline flex items-center gap-1 transition-colors"
+                      >
+                        <span>Consultar no Glossário</span>
+                        <BookOpen className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {activeLesson.keyTerms.map((term, i) => (
-                      <div key={i} className="p-3 bg-[#15171E] rounded-xl border border-slate-800">
-                        <span className="font-bold text-xs text-white block mb-0.5 font-mono">{term.term}</span>
-                        <span className="text-xs text-slate-400">{term.definition}</span>
-                      </div>
+                      <button
+                        key={i}
+                        onClick={() => onOpenGlossaryTerm?.(term.term)}
+                        className="text-left p-3 bg-[#15171E] hover:bg-slate-800/80 rounded-xl border border-slate-800 hover:border-[#00FF41]/40 transition-all group/term"
+                        title="Clique para ver detalhes e analogias no Glossário"
+                      >
+                        <div className="flex items-center justify-between gap-1 mb-0.5">
+                          <span className="font-bold text-xs text-white group-hover/term:text-[#00FF41] font-mono transition-colors">
+                            {term.term}
+                          </span>
+                          <span className="text-[10px] font-mono text-slate-500 group-hover/term:text-[#00FF41] transition-colors">
+                            ↗
+                          </span>
+                        </div>
+                        <span className="text-xs text-slate-400 leading-relaxed block">{term.definition}</span>
+                      </button>
                     ))}
                   </div>
                 </div>

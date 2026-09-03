@@ -29,6 +29,11 @@ O **CyberShield Academy** foi desenvolvido com a missão de **democratizar o con
 
 ## 🚀 Funcionalidades Principais
 
+* **📖 Glossário de Cibersegurança & Dicionário Hacker:**
+  * Seção dedicada e **Pop-up Rápido** acessível de qualquer lugar da aplicação.
+  * Analogias didáticas para iniciantes sem jargões (ex: "SQLi é como alterar o pedido no garçom"), definições técnicas aprofundadas, cenários reais de ataque e regras de mitigação/defesa.
+  * Filtros dinâmicos por categoria (*Fundamentos, Web & OWASP, Pentest & Red Team, Criptografia, Ameaças, Redes*) e por nível de dificuldade (*Iniciante, Intermediário, Avançado*).
+  * Função de cópia rápida para estudo e vinculação direta com as lições das trilhas.
 * **🎯 Trilhas de Conhecimento Estruturadas:**
   * Fundamentos de Segurança da Informação (Tríade CIA, tipos de hackers, ameaças comuns).
   * Hacking Ético & Pentest (Ciclo PTES, reconhecimento, varreduras).
@@ -65,8 +70,8 @@ O **CyberShield Academy** foi desenvolvido com a missão de **democratizar o con
 ## 🛠️ Como Executar Localmente
 
 ### Pré-requisitos
-* [Node.js](https://nodejs.org/) versão 18 ou superior
-* Gerenciador de pacotes `npm`
+* [Node.js](https://nodejs.org/) versão **22 LTS** (ou a versão estável mais recente do Node)
+* Gerenciador de pacotes `npm` (incluso no Node.js)
 
 ### Passo a passo
 ```bash
@@ -76,10 +81,13 @@ git clone https://github.com/seu-usuario/cybershield-app.git
 # 2. Acesse o diretório
 cd cybershield-app
 
-# 3. Instale as dependências
+# 3. Certifique-se de estar usando o Node 22+
+node -v # ex: v22.x.x
+
+# 4. Instale as dependências
 npm install
 
-# 4. Inicie o servidor de desenvolvimento
+# 5. Inicie o servidor de desenvolvimento
 npm run dev
 ```
 
@@ -93,7 +101,7 @@ O projeto foi configurado com caminhos relativos (`base: './'`) no `vite.config.
 
 ### Opção 1: Deploy Automático com GitHub Actions (Recomendado)
 
-1. No seu repositório no GitHub, crie o arquivo `.github/workflows/deploy.yml` com o seguinte conteúdo:
+O arquivo `.github/workflows/deploy.yml` já está criado na raiz do projeto com o Node.js v22 configurado:
 
 ```yaml
 name: Deploy to GitHub Pages
@@ -119,19 +127,19 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js (Latest LTS - v22)
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
 
       - name: Install Dependencies
         run: npm ci
 
-      - name: Build
+      - name: Build Static Applet
         run: npm run build
 
       - name: Setup Pages

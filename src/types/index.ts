@@ -1,4 +1,26 @@
-export type AppTab = 'tracks' | 'owasp' | 'pentest' | 'terminal' | 'kids' | 'tips' | 'checklist' | 'emergency';
+export type AppTab = 'tracks' | 'owasp' | 'pentest' | 'terminal' | 'kids' | 'tips' | 'checklist' | 'emergency' | 'glossary';
+
+export type GlossaryCategory = 
+  | 'Fundamentos' 
+  | 'Web & OWASP' 
+  | 'Pentest & Red Team' 
+  | 'Criptografia & Senhas' 
+  | 'Ameaças & Golpes' 
+  | 'Redes & Infra';
+
+export interface GlossaryTerm {
+  id: string;
+  term: string;
+  acronym?: string;
+  category: GlossaryCategory;
+  level: 'Iniciante' | 'Intermediário' | 'Avançado';
+  simpleExplanation: string; // Analogia sem jargão para iniciantes
+  technicalDefinition: string; // Definição técnica formal
+  realWorldExample: string; // Exemplo prático ou ataque real
+  howToPreventOrMitigate: string; // Boas práticas e mitigação
+  relatedTerms?: string[];
+  trackId?: string;
+}
 
 export type UserLevel = 'Iniciante' | 'Explorador' | 'Analista Jr' | 'Pentester' | 'Especialista' | 'White Hat Elite';
 

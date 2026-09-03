@@ -12,7 +12,8 @@ import {
   Github, 
   Baby, 
   Trophy,
-  CheckSquare
+  CheckSquare,
+  GraduationCap
 } from 'lucide-react';
 import { AppTab, UserProgress } from '../types';
 import { calculateLevel } from '../utils/storage';
@@ -26,6 +27,7 @@ interface NavbarProps {
   onOpenGithubModal: () => void;
   onOpenEthicsModal: () => void;
   onOpenBadgesModal: () => void;
+  onOpenGlossaryModal?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -36,12 +38,14 @@ export const Navbar: React.FC<NavbarProps> = ({
   setIsKidsMode,
   onOpenGithubModal,
   onOpenEthicsModal,
-  onOpenBadgesModal
+  onOpenBadgesModal,
+  onOpenGlossaryModal,
 }) => {
   const { level, progressPct, currentLevelXp, nextLevelXp } = calculateLevel(progress.xp);
 
   const mainTabs = [
-    { id: 'tracks' as AppTab, label: 'Trilhas', icon: BookOpen },
+    { id: 'tracks' as AppTab, label: 'Trilhas', icon: GraduationCap },
+    { id: 'glossary' as AppTab, label: 'Glossário', icon: BookOpen },
     { id: 'owasp' as AppTab, label: 'OWASP Lab', icon: Code2 },
     { id: 'pentest' as AppTab, label: 'Pentest Hub', icon: Crosshair },
     { id: 'terminal' as AppTab, label: 'Terminal CTF', icon: Terminal },
@@ -133,6 +137,18 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <Shield className="w-4 h-4" />
             </button>
+
+            {/* Quick Glossary Popup Button */}
+            {onOpenGlossaryModal && (
+              <button
+                onClick={onOpenGlossaryModal}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#15171E] hover:bg-slate-800 text-slate-300 hover:text-[#00FF41] border border-slate-800 hover:border-[#00FF41]/30 text-xs font-mono font-medium transition-all"
+                title="Abrir Glossário Rápido (Pop-up)"
+              >
+                <BookOpen className="w-4 h-4 text-[#00FF41]" />
+                <span className="hidden lg:inline">GLOSSÁRIO</span>
+              </button>
+            )}
 
             {/* GitHub Pages Deploy Helper */}
             <button

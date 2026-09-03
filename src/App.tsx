@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { TracksView } from './components/TracksView';
+import { GlossaryView } from './components/GlossaryView';
+import { GlossaryModal } from './components/GlossaryModal';
 import { OwaspLabView } from './components/OwaspLabView';
 import { PentestView } from './components/PentestView';
 import { TerminalView } from './components/TerminalView';
@@ -22,7 +24,7 @@ import {
   triggerConfetti
 } from './utils/storage';
 import { UserProgress } from './types';
-import { Shield, Sparkles, AlertTriangle, Github, Award, HeartHandshake, Baby, Terminal, Crosshair, HelpCircle } from 'lucide-react';
+import { Shield, Sparkles, AlertTriangle, Github, Award, HeartHandshake, Baby, Terminal, Crosshair, HelpCircle, BookOpen } from 'lucide-react';
 
 export default function App() {
   const [progress, setProgress] = useState<UserProgress>(loadUserProgress());
@@ -33,6 +35,8 @@ export default function App() {
   const [isGithubModalOpen, setIsGithubModalOpen] = useState<boolean>(false);
   const [isEthicsModalOpen, setIsEthicsModalOpen] = useState<boolean>(false);
   const [isBadgesModalOpen, setIsBadgesModalOpen] = useState<boolean>(false);
+  const [isGlossaryModalOpen, setIsGlossaryModalOpen] = useState<boolean>(false);
+  const [glossaryModalTerm, setGlossaryModalTerm] = useState<string>('');
   const [certificateTrackTitle, setCertificateTrackTitle] = useState<string | null>(null);
 
   useEffect(() => {
@@ -100,6 +104,10 @@ export default function App() {
         onOpenGithubModal={() => setIsGithubModalOpen(true)}
         onOpenEthicsModal={() => setIsEthicsModalOpen(true)}
         onOpenBadgesModal={() => setIsBadgesModalOpen(true)}
+        onOpenGlossaryModal={() => {
+          setGlossaryModalTerm('');
+          setIsGlossaryModalOpen(true);
+        }}
       />
 
       {/* Main Content Area */}
@@ -112,6 +120,16 @@ export default function App() {
               handleCompleteLesson(lessonId, 'track-general', xpEarned);
             }}
             onOpenCertificate={(title) => setCertificateTrackTitle(title)}
+            onOpenGlossaryTerm={(termName) => {
+              setGlossaryModalTerm(termName);
+              setIsGlossaryModalOpen(true);
+            }}
+          />
+        )}
+
+        {activeView === 'glossary' && (
+          <GlossaryView
+            onNavigateToTrack={() => handleViewChange('tracks')}
           />
         )}
 
@@ -198,6 +216,11 @@ export default function App() {
                   </button>
                 </li>
                 <li>
+                  <button onClick={() => handleViewChange('glossary')} className="hover:text-[#00FF41] transition-colors text-[#00FF41]/90 font-medium">
+                    Glossário & Dicionário Hacker
+                  </button>
+                </li>
+                <li>
                   <button onClick={() => handleViewChange('owasp')} className="hover:text-[#00FF41] transition-colors">
                     Laboratório OWASP Top 10
                   </button>
@@ -262,6 +285,13 @@ export default function App() {
         isOpen={isBadgesModalOpen}
         onClose={() => setIsBadgesModalOpen(false)}
         progress={progress}
+      />
+
+      <GlossaryModal
+        isOpen={isGlossaryModalOpen}
+        onClose={() => setIsGlossaryModalOpen(false)}
+        initialSearchQuery={glossaryModalTerm}
+        onNavigateToFullGlossary={() => handleViewChange('glossary')}
       />
 
       {certificateTrackTitle && (

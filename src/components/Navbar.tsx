@@ -13,10 +13,12 @@ import {
   Baby, 
   Trophy,
   CheckSquare,
-  GraduationCap
+  GraduationCap,
+  Flame
 } from 'lucide-react';
 import { AppTab, UserProgress } from '../types';
 import { calculateLevel } from '../utils/storage';
+import { getTodayDateString } from '../data/dailyChallengesData';
 
 interface NavbarProps {
   activeTab: AppTab;
@@ -28,6 +30,7 @@ interface NavbarProps {
   onOpenEthicsModal: () => void;
   onOpenBadgesModal: () => void;
   onOpenGlossaryModal?: () => void;
+  onOpenDailyModal?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -40,8 +43,11 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenEthicsModal,
   onOpenBadgesModal,
   onOpenGlossaryModal,
+  onOpenDailyModal,
 }) => {
   const { level, progressPct, currentLevelXp, nextLevelXp } = calculateLevel(progress.xp);
+  const todayStr = getTodayDateString();
+  const isDailyDoneToday = Boolean(progress.completedDailyDates?.includes(todayStr));
 
   const mainTabs = [
     { id: 'tracks' as AppTab, label: 'Trilhas', icon: GraduationCap },
@@ -137,6 +143,27 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <Shield className="w-4 h-4" />
             </button>
+
+            {/* Quick Desafio do Dia Button */}
+            {onOpenDailyModal && (
+              <button
+                onClick={onOpenDailyModal}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-mono font-medium transition-all ${
+                  isDailyDoneToday
+                    ? 'bg-[#00FF41]/10 text-[#00FF41] border-[#00FF41]/30 hover:bg-[#00FF41]/20'
+                    : 'bg-amber-500/10 text-amber-300 border-amber-500/30 hover:bg-amber-500/20 hover:border-amber-500/60'
+                }`}
+                title="Abrir Desafio do Dia (+100 XP)"
+              >
+                <Flame className={`w-4 h-4 ${isDailyDoneToday ? 'text-[#00FF41]' : 'text-amber-400 fill-amber-400 animate-pulse'}`} />
+                <span className="hidden xl:inline">DESAFIO DO DIA</span>
+                {progress.dailyStreak !== undefined && progress.dailyStreak > 0 && (
+                  <span className="bg-amber-500/20 px-1.5 py-0.2 rounded text-[10px] font-bold text-amber-400">
+                    {progress.dailyStreak}d
+                  </span>
+                )}
+              </button>
+            )}
 
             {/* Quick Glossary Popup Button */}
             {onOpenGlossaryModal && (

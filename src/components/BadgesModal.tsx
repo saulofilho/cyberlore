@@ -1,6 +1,7 @@
 import React from 'react';
-import { Trophy, Award, Star, Zap, X, Shield, Lock } from 'lucide-react';
+import { Trophy, Award, Star, Zap, X, Shield, Lock, Flame } from 'lucide-react';
 import { UserProgress } from '../types';
+import { calculateLevel } from '../utils/storage';
 
 interface BadgesModalProps {
   isOpen: boolean;
@@ -65,10 +66,18 @@ export const BadgesModal: React.FC<BadgesModalProps> = ({
       desc: 'Marcou 5 ou mais itens no Checklist de Proteção Pessoal.',
       icon: '🔒',
       isUnlocked: progress.completedChecklistItems.length >= 5
+    },
+    {
+      id: 'daily_warrior',
+      name: 'Guerreiro Diário',
+      desc: 'Completou um Desafio do Dia e manteve o ritmo de ciberdefesa ativo.',
+      icon: '🔥',
+      isUnlocked: (progress.completedDailyDates && progress.completedDailyDates.length > 0) || (progress.dailyStreak !== undefined && progress.dailyStreak > 0)
     }
   ];
 
   const unlockedCount = allBadges.filter(b => b.isUnlocked).length;
+  const currentLvl = calculateLevel(progress.xp).level;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
@@ -96,7 +105,7 @@ export const BadgesModal: React.FC<BadgesModalProps> = ({
         <div className="p-6 bg-slate-950/60 border-b border-slate-800 grid grid-cols-3 gap-4 text-center">
           <div>
             <span className="text-xs text-slate-400 uppercase font-mono block">Nível Atual</span>
-            <span className="text-xl font-extrabold text-emerald-400 font-mono">Nível {progress.level}</span>
+            <span className="text-xl font-extrabold text-emerald-400 font-mono">{currentLvl}</span>
           </div>
           <div>
             <span className="text-xs text-slate-400 uppercase font-mono block">XP Total</span>

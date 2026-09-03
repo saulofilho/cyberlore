@@ -10,7 +10,11 @@ export const initialProgress: UserProgress = {
   capturedFlags: [],
   completedChecklistItems: ['chk-1', 'chk-2'],
   badges: ['Iniciado no CyberShield'],
-  kidsCompletedQuests: []
+  kidsCompletedQuests: [],
+  dailyStreak: 0,
+  lastCompletedDailyDate: '',
+  completedDailyDates: [],
+  completedDailyChallengeIds: []
 };
 
 export function loadUserProgress(): UserProgress {
@@ -105,6 +109,45 @@ export function toggleChecklistItem(itemId: string): UserProgress {
 export function resetUserProgress(): UserProgress {
   saveUserProgress(initialProgress);
   return initialProgress;
+}
+
+export function completeDailyChallenge(challengeId: string, xpReward: number = 100): { updated: UserProgress; isFirstToday: boolean; streak: number } {
+  const current = loadUserProgress();
+  const now = new Date();
+  const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  
+  const completedDates = current.completedDailyDates || [];
+  const completedIds = current.completedDailyChallengeIds || [];
+  const isFirstToday = !completedDates.includes(todayStr);
+
+  let newStreak = current.dailyStreak || 0;
+  if (isFirstToday) {
+    const yesterday = new Date(now);
+    yesterday.setDate(now.getDate() - 1);
+    const yesterdayStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`;
+    
+    if (current.lastCompletedDailyDate === yesterdayStr) {
+      newStreak += 1;
+    } else {
+      newStreak = 1;
+    }
+  }
+
+  const alreadyHasBadge = current.badges.includes('Guerreiro Diário');
+  const updatedBadges = (!alreadyHasBadge) ? [...current.badges, 'Guerreiro Diário'] : current.badges;
+
+  const updated: UserProgress = {
+    ...current,
+    xp: isFirstToday ? current.xp + xpReward : current.xp,
+    dailyStreak: newStreak,
+    lastCompletedDailyDate: todayStr,
+    completedDailyDates: isFirstToday ? [...completedDates, todayStr] : completedDates,
+    completedDailyChallengeIds: completedIds.includes(challengeId) ? completedIds : [...completedIds, challengeId],
+    badges: updatedBadges
+  };
+
+  saveUserProgress(updated);
+  return { updated, isFirstToday, streak: newStreak };
 }
 
 export function triggerConfetti() {

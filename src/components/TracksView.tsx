@@ -22,12 +22,14 @@ import {
 import { tracksData } from '../data/tracksData';
 import { Track, Lesson, UserProgress } from '../types';
 import { triggerConfetti } from '../utils/storage';
+import { DailyChallengeCard } from './DailyChallengeCard';
 
 interface TracksViewProps {
   progress: UserProgress;
   onCompleteLesson: (lessonId: string, xpEarned: number) => void;
   onOpenCertificate: (trackTitle: string) => void;
   onOpenGlossaryTerm?: (termName: string) => void;
+  onCompleteDailyChallenge?: (challengeId: string, xpEarned: number) => void;
 }
 
 const iconMap: Record<string, React.ElementType> = {
@@ -44,6 +46,7 @@ export const TracksView: React.FC<TracksViewProps> = ({
   onCompleteLesson,
   onOpenCertificate,
   onOpenGlossaryTerm,
+  onCompleteDailyChallenge,
 }) => {
   const [selectedTrackId, setSelectedTrackId] = useState<string>(tracksData[0].id);
   const [activeLesson, setActiveLesson] = useState<Lesson | null>(null);
@@ -118,6 +121,16 @@ export const TracksView: React.FC<TracksViewProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Daily Challenge Bento Card */}
+      <DailyChallengeCard
+        progress={progress}
+        onComplete={(id, xp) => {
+          if (onCompleteDailyChallenge) {
+            onCompleteDailyChallenge(id, xp);
+          }
+        }}
+      />
 
       {/* Main Track Selection & Detail Split */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">

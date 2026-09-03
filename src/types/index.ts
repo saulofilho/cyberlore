@@ -32,6 +32,44 @@ export interface UserProgress {
   completedChecklistItems: string[];
   badges: string[];
   kidsCompletedQuests: string[];
+  dailyStreak?: number;
+  lastCompletedDailyDate?: string;
+  completedDailyDates?: string[];
+  completedDailyChallengeIds?: string[];
+}
+
+export type DailyChallengeCategory = 
+  | 'Criptografia' 
+  | 'Web & OWASP' 
+  | 'Forense & Logs' 
+  | 'Engenharia Social' 
+  | 'Redes & Portas' 
+  | 'Terminal & Linux';
+
+export interface DailyChallengeOption {
+  id: string;
+  text: string;
+  isCorrect: boolean;
+  explanation: string;
+}
+
+export interface DailyChallenge {
+  id: string;
+  title: string;
+  category: DailyChallengeCategory;
+  difficulty: 'Fácil' | 'Médio' | 'Rápido';
+  xpReward: number;
+  description: string;
+  scenario: string;
+  taskType: 'flag_input' | 'multiple_choice';
+  targetData?: string;
+  targetDataLabel?: string;
+  flagOrAnswer: string;
+  acceptableAnswers?: string[];
+  options?: DailyChallengeOption[];
+  hint: string;
+  explanation: string;
+  realWorldImpact: string;
 }
 
 export interface QuizQuestion {

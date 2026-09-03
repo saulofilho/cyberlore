@@ -13,6 +13,7 @@ import { GitHubPagesModal } from './components/GitHubPagesModal';
 import { EthicsModal } from './components/EthicsModal';
 import { CertificateModal } from './components/CertificateModal';
 import { BadgesModal } from './components/BadgesModal';
+import { DailyChallengeModal } from './components/DailyChallengeModal';
 import { 
   loadUserProgress, 
   saveUserProgress, 
@@ -21,6 +22,7 @@ import {
   addKidsCompletedQuest, 
   toggleChecklistItem, 
   resetUserProgress,
+  completeDailyChallenge,
   triggerConfetti
 } from './utils/storage';
 import { UserProgress } from './types';
@@ -36,6 +38,7 @@ export default function App() {
   const [isEthicsModalOpen, setIsEthicsModalOpen] = useState<boolean>(false);
   const [isBadgesModalOpen, setIsBadgesModalOpen] = useState<boolean>(false);
   const [isGlossaryModalOpen, setIsGlossaryModalOpen] = useState<boolean>(false);
+  const [isDailyChallengeModalOpen, setIsDailyChallengeModalOpen] = useState<boolean>(false);
   const [glossaryModalTerm, setGlossaryModalTerm] = useState<string>('');
   const [certificateTrackTitle, setCertificateTrackTitle] = useState<string | null>(null);
 
@@ -76,6 +79,11 @@ export default function App() {
     setProgress(updated);
   };
 
+  const handleCompleteDailyChallenge = (challengeId: string, xpPoints: number) => {
+    const { updated } = completeDailyChallenge(challengeId, xpPoints);
+    setProgress(updated);
+  };
+
   const handleCompleteKidsQuest = (questId: string, badgeName: string) => {
     const updated = addKidsCompletedQuest(questId, badgeName);
     setProgress(updated);
@@ -104,6 +112,7 @@ export default function App() {
         onOpenGithubModal={() => setIsGithubModalOpen(true)}
         onOpenEthicsModal={() => setIsEthicsModalOpen(true)}
         onOpenBadgesModal={() => setIsBadgesModalOpen(true)}
+        onOpenDailyModal={() => setIsDailyChallengeModalOpen(true)}
         onOpenGlossaryModal={() => {
           setGlossaryModalTerm('');
           setIsGlossaryModalOpen(true);
@@ -119,6 +128,7 @@ export default function App() {
               const selectedTrk = progress.completedLessons;
               handleCompleteLesson(lessonId, 'track-general', xpEarned);
             }}
+            onCompleteDailyChallenge={handleCompleteDailyChallenge}
             onOpenCertificate={(title) => setCertificateTrackTitle(title)}
             onOpenGlossaryTerm={(termName) => {
               setGlossaryModalTerm(termName);
@@ -285,6 +295,13 @@ export default function App() {
         isOpen={isBadgesModalOpen}
         onClose={() => setIsBadgesModalOpen(false)}
         progress={progress}
+      />
+
+      <DailyChallengeModal
+        isOpen={isDailyChallengeModalOpen}
+        onClose={() => setIsDailyChallengeModalOpen(false)}
+        progress={progress}
+        onComplete={handleCompleteDailyChallenge}
       />
 
       <GlossaryModal

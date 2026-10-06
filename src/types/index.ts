@@ -118,6 +118,7 @@ export interface Track {
   title: string;
   shortDesc: string;
   iconName: string;
+  iconUrl?: string; // Icon URL path
   badgeName: string;
   color: string;
   level: 'Iniciante' | 'Intermediário' | 'Avançado' | 'Todos os Públicos';

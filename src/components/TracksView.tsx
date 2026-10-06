@@ -182,12 +182,16 @@ export const TracksView: React.FC<TracksViewProps> = ({
                     <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-[#00FF41]" />
                   )}
                   <div className="flex items-start gap-3">
-                    <div className={`p-2.5 rounded-xl border ${
+                    <div className={`p-2.5 rounded-xl border flex items-center justify-center shrink-0 ${
                       isSelected 
                         ? 'bg-[#00FF41]/10 border-[#00FF41]/30 text-[#00FF41]' 
                         : 'bg-slate-900 border-slate-800 text-slate-400'
                     }`}>
-                      <Icon className="w-5 h-5" />
+                      {track.iconUrl ? (
+                        <img src={track.iconUrl} alt={track.title} className="w-5 h-5 object-contain" />
+                      ) : (
+                        <Icon className="w-5 h-5" />
+                      )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2">
